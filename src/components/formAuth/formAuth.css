@@ -1,0 +1,14 @@
+.form {
+  width: 500px;
+  background-color: #343f46;
+  background-color: #111b21;
+  background-color: #222e35;
+  border: 1px solid white;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
