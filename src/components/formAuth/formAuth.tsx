@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import "./formAuth.css";
 import InputLogin from "../inputLogin/inputLogin";
-import { useAppDispatch } from "../../redux/hooks";
-import { fetchAuthorization, setUser } from "../../redux/reducers/authSlice";
+import { Link, Navigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { fetchAuth, setAccount } from "../../redux/reducers/authSlice";
+import { IAccount } from "../../models/account";
 
 const FormAuth = () => {
-  const [idInstance, setIdInstance] = useState("");
-  const [apiTokenInstance, setApiTokenInstance] = useState("");
+  const [idInstance, setIdInstance] = useState<string>("");
+  const [apiTokenInstance, setApiTokenInstance] = useState<string>("");
+  const { error, loading, account } = useAppSelector((state) => state.authorization);
+  const user: IAccount = JSON.parse(localStorage.getItem("user") || "null");
   const dispatch = useAppDispatch();
+
+  if (!error && !loading && account) return <Navigate to="/account" />;
 
   return (
     <div className="form">
@@ -21,14 +27,20 @@ const FormAuth = () => {
         value={apiTokenInstance}
         setValue={setApiTokenInstance}
       />
-      <button
-        onClick={() => {
-          dispatch(setUser(JSON.parse(localStorage.getItem("user") || "{}")));
-          dispatch(fetchAuthorization(JSON.parse(localStorage.getItem("user") || "{}")));
-        }}
-      >
-        Submit
-      </button>
+
+      <div className="form-submit">
+        <button
+          className="form__submit-btn"
+          onClick={() => {
+            dispatch(setAccount(user));
+            dispatch(fetchAuth(user));
+          }}
+        >
+          Submit
+        </button>
+
+        <Link to={"https://green-api.com"}>Register</Link>
+      </div>
     </div>
   );
 };

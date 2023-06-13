@@ -1,10 +1,14 @@
 import React from "react";
+import ChatList from "../../components/chatList/chatList";
+import UserChat from "../../components/userChat/userChat";
+import "./accountPage.css";
 
 const AccountPage = () => {
   return (
-    <div className="account-page">
-      <h1>AccountPage</h1>
-    </div>
+    <section className="account-page">
+      <ChatList />
+      <UserChat />
+    </section>
   );
 };
 

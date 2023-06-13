@@ -26,3 +26,11 @@
 .Input-login__input:focus {
   border: 1px solid #63cb77;
 }
+
+.input-login__error-message {
+  color: rgb(230, 0, 0);
+}
+
+.Input-login__input_error {
+  border: 1px solid rgb(230, 0, 0);
+}

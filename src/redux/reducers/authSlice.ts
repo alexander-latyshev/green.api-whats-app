@@ -1,22 +1,26 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { HOST } from "../../api/consts";
-import { IUser } from "../../models/user";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { HOST, STORAGE_USER } from "../../api/consts";
+import { IAccount } from "../../models/account";
+import { IAuthResponse } from "../../models/auth";
 
 interface IInitialState {
-  user: IUser | null;
+  account: IAccount | null;
+  error: boolean;
+  loading: boolean;
+  message: string | null;
 }
 
 const initialState: IInitialState = {
-  user: null,
+  account: STORAGE_USER,
+  error: false,
+  loading: false,
+  message: null,
 };
 
-export const fetchAuthorization = createAsyncThunk<any, Record<string, string>>(
+export const fetchAuth = createAsyncThunk<IAuthResponse, IAccount>(
   "authorization/fetch",
-  async (user: IUser) => {
-    // { idInstance, apiTokenInstance }
-    const { idInstance, apiTokenInstance } = user;
-    console.log(user);
-    const url: string = `${HOST}/waInstance=${await idInstance}/getSettings/${await apiTokenInstance}`;
+  async ({ idInstance, apiTokenInstance }, thunkAPI) => {
+    const url: string = `${HOST}/waInstance${idInstance}/getSettings/${apiTokenInstance}`;
     try {
       const res = await fetch(url, {
         method: "GET",
@@ -25,10 +29,10 @@ export const fetchAuthorization = createAsyncThunk<any, Record<string, string>>(
         },
       });
       const result = await res.json();
-      console.log(result, "result");
       return result;
     } catch (e) {
-      console.log(e);
+      console.log(thunkAPI.rejectWithValue(e));
+      thunkAPI.rejectWithValue(e);
     }
   }
 );
@@ -37,18 +41,30 @@ export const authSlice = createSlice({
   name: "authorization",
   initialState,
   reducers: {
-    setUser: (state, action) => {
-      console.log(action);
-      return { ...state, user: action.payload };
+    setAccount: (state, { payload }: PayloadAction<IAccount>) => {
+      return { ...state, account: payload };
     },
   },
   extraReducers(builder) {
-    builder.addCase(fetchAuthorization.fulfilled, (state) => {
-      return state;
-    });
+    builder
+      .addCase(fetchAuth.pending, (state) => {
+        return { ...state, loading: true };
+      })
+      .addCase(fetchAuth.rejected, (state, { error }: any) => {
+        console.log(error);
+        const errorMessage: string = `${error.name}: ${error.message}`;
+        return {
+          ...state,
+          loading: false,
+          error: true,
+          message: errorMessage,
+        };
+      })
+      .addCase(fetchAuth.fulfilled, (state) => {
+        return { ...state, loading: false, error: false, message: null };
+      });
   },
 });
 
-export const { setUser } = authSlice.actions;
-
+export const { setAccount } = authSlice.actions;
 export default authSlice.reducer;

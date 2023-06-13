@@ -1,7 +1,5 @@
 .form {
   width: 500px;
-  background-color: #343f46;
-  background-color: #111b21;
   background-color: #222e35;
   border: 1px solid white;
   height: auto;
@@ -11,4 +9,21 @@
   align-items: center;
   justify-content: center;
   padding: 10px;
+}
+.form-submit {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+.form-submit a {
+  color: white;
+  font-size: 18px;
+  transition: color 0.25s ease-in-out;
+}
+.form-submit a:hover {
+  color: #63cb77;
+}
+.form__link {
+  padding: 10px 30px;
+  border-radius: 8px;
 }
