@@ -1,0 +1,25 @@
+.validation-input {
+  width: 75%;
+  height: 35px;
+  font-size: 16px;
+}
+.validation-input::placeholder {
+  color: grey;
+  font-size: 18px;
+
+}
+.validation-input_chat {
+  width: calc(95% - (20px * 2));
+  font-size: 24px;
+  height: 40px;
+  background-color: #111b21;
+  border-radius: 18px;
+  border: 2px solid rgb(170, 170, 170);
+  text-align: start;
+  text-justify: start;
+  padding: 0 20px;
+  border-radius: 8px;
+}
+.validation-input_chat:focus {
+  border: 2px solid #63cb77;
+}

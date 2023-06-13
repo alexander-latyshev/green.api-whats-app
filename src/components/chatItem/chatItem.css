@@ -1,0 +1,37 @@
+.chat-item {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s ease-in-out;
+  font-size: 25px;
+  position: relative;
+}
+.chat-item:hover {
+  background-color: #343f46;
+  cursor: pointer;
+}
+.chat-item__remove-btn {
+  background: transparent;
+  outline: none;
+  border: none;
+  height: 30px;
+  width: 30px;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  position: absolute;
+  right: 5px;
+}
+.chat-item__remove-btn:focus {
+  outline: none;
+  border: none;
+}
+.chat-item__remove-icon {
+  color: #8696a0;
+  display: none;
+}
+.chat-item:hover .chat-item__remove-icon {
+  display: block;
+}
