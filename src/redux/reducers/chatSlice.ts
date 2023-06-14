@@ -5,7 +5,8 @@ import {
   IHistoryResponse,
   IMessageResponse,
 } from "../../models/chat";
-import { HOST, STORAGE_USER } from "../../api/consts";
+import { HOST } from "../../api/consts";
+import { IAccount } from "../../models/account";
 
 export interface IMessageParams {
   message: string;
@@ -31,8 +32,10 @@ const initialState: IInitialState = {
 export const sendMessage = createAsyncThunk<IMessageResponse, IMessageParams>(
   "chats/sendMessage",
   async ({ message, phoneNumber }) => {
-    const { idInstance, apiTokenInstance } = STORAGE_USER;
+    let user: IAccount = JSON.parse(localStorage.getItem("user") || "null");
+    const { idInstance, apiTokenInstance } = user;
     const url: string = `${HOST}/waInstance${idInstance}/sendMessage/${apiTokenInstance}`;
+
     try {
       const res = await fetch(url, {
         method: "POST",
@@ -55,9 +58,11 @@ export const sendMessage = createAsyncThunk<IMessageResponse, IMessageParams>(
 export const fetchChatHistory = createAsyncThunk<IHistoryResponse, string>(
   "chats/fetchChatHistory",
   async (phoneNumber) => {
-    const { idInstance, apiTokenInstance } = STORAGE_USER;
+    const user: IAccount = JSON.parse(localStorage.getItem("user") || "null");
+    const { idInstance, apiTokenInstance } = user;
     if (!phoneNumber) return;
     const url: string = `${HOST}/waInstance${idInstance}/getChatHistory/${apiTokenInstance}`;
+    
     try {
       const res = await fetch(url, {
         method: "POST",
@@ -107,7 +112,7 @@ export const chatSlice = createSlice({
       .addCase(
         fetchChatHistory.rejected,
         (state, { payload }: PayloadAction<any>) => {
-          return { ...state, loading: true, error: payload };
+          return { ...state, loading: false, error: payload };
         }
       )
       .addCase(

@@ -5,7 +5,6 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addChat } from "../../redux/reducers/chatSlice";
 import ChatItem from "../chatItem/chatItem";
 import { IChat } from "../../models/chat";
-import { STORAGE_USER } from "../../api/consts";
 import { MdAccountCircle } from "react-icons/md";
 import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import ValidationInput from "../validationInput/validationInput";
@@ -14,6 +13,7 @@ import { Scrollbar } from "react-scrollbars-custom";
 const chatList = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const { chats } = useAppSelector((state) => state.chat);
+  const idInstance = useAppSelector((state) => state.authorization.account?.idInstance);
   const dispatch = useAppDispatch();
 
   const addNewChat: IChat = {
@@ -33,7 +33,7 @@ const chatList = () => {
         <button>
           <FaRegArrowAltCircleLeft size={20} />
         </button>
-        <span>{`ID: ${STORAGE_USER?.idInstance}`}</span>
+        <span>{`ID: ${idInstance}`}</span>
         <button>
           <MdAccountCircle size={20} />
         </button>
