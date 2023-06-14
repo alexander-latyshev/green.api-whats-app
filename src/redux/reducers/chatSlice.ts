@@ -99,9 +99,7 @@ export const chatSlice = createSlice({
         return state;
       })
       .addCase(sendMessage.fulfilled, (state) => {
-        return {
-          ...state,
-        };
+        return state;
       })
       .addCase(fetchChatHistory.pending, (state) => {
         return { ...state, loading: true };

@@ -23,9 +23,12 @@ const UserChat = () => {
     phoneNumber: selectedChat?.phone,
   };
 
-  const sendMessageHandler = async () => {
-    await dispatch(sendMessage(message)).then(() => {
-      if (selectedChat?.phone) dispatch(fetchChatHistory(selectedChat?.phone));
+  const sendMessageHandler = () => {
+    dispatch(sendMessage(message)).then(() => {
+      if (selectedChat?.phone)
+        setTimeout(() => {
+          dispatch(fetchChatHistory(selectedChat?.phone));
+        }, 3000);
     });
   };
 
